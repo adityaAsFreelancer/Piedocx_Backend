@@ -1,0 +1,22 @@
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = __importDefault(require("express"));
+const SignupController_1 = require("../controllers/SignupController");
+const SigninController_1 = require("../controllers/SigninController");
+const EnrollMent_1 = require("../controllers/EnrollMent");
+const ChangePasswordController_1 = __importDefault(require("../controllers/ChangePasswordController"));
+const EditprofileController_1 = __importDefault(require("../controllers/EditprofileController"));
+const NotificationController_1 = require("../controllers/NotificationController");
+const PdfController_1 = require("../controllers/PdfController");
+const StudentRoute = express_1.default.Router();
+StudentRoute.post('/student-register', SignupController_1.StudentRegister);
+StudentRoute.post('/student-login', SigninController_1.StudentSigninController);
+StudentRoute.post('/student-enrollment', EnrollMent_1.EnrollMentController);
+StudentRoute.post('/student-changepssword', ChangePasswordController_1.default);
+StudentRoute.post('/student-updateProfile', EditprofileController_1.default);
+StudentRoute.get('/student-notification', NotificationController_1.getNotification);
+StudentRoute.get('/student-get-pdfs', PdfController_1.getAllPdfs);
+exports.default = StudentRoute;
