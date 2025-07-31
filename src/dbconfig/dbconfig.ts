@@ -10,7 +10,7 @@ export const AppDataSource = new DataSource({
   ssl: process.env.NODE_ENV === "production"
     ? { rejectUnauthorized: false }
     : false,
-  entities: ["src/Entities/**/*.ts"],
-  migrations: ["src/Entities/migration/**/*.ts"],
-  subscribers: ["src/Entities/subscriber/**/*.ts"],
+  entities: ["dist/Entities/**/*.js"],
+  migrations: ["dist/Entities/migration/**/*.js"],
+  subscribers: ["dist/Entities/subscriber/**/*.js"],
 });
