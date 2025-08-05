@@ -17,6 +17,7 @@ export const StudentSigninController=async (req:any,res:any)=>{
             return createResponse(res, 404, "Invalid email or Password!", [], false, true)
         }
     } catch (err) {
+            console.log(err);
            return createResponse(res, 500, "Internal Server Error!", err, false, true); 
     }
 }

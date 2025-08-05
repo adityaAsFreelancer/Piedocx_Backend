@@ -6,11 +6,11 @@ dotenv.config();
 export const AppDataSource = new DataSource({
   type: "postgres",
   url: process.env.DATABASE_URL,
-  synchronize: true, // set to false in production if using migrations
+  synchronize: true,
   ssl: process.env.NODE_ENV === "production"
     ? { rejectUnauthorized: false }
     : false,
-  entities: ["dist/Entities/**/*.js"],
-  migrations: ["dist/Entities/migration/**/*.js"],
-  subscribers: ["dist/Entities/subscriber/**/*.js"],
+  entities: ["src/Entities/**/*.ts"],
+  migrations: ["src/Entities/migration/**/*.ts"],
+  subscribers: ["src/Entities/subscriber/**/*.ts"],
 });

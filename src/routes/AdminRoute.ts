@@ -10,6 +10,8 @@ import CertificateController, { getCertificate } from '../controllers/Certificat
 import NotificationController from '../controllers/NotificationController';
 import {UploadPdf} from '../controllers/PdfController'
 import { addQuestionToTest } from '../controllers/question.controller';
+import { createPlaylist, getAllPlaylists } from '../controllers/PlaylistController';
+import { addVideoToPlaylist } from '../controllers/VideoController';
 
 const AdminRoute=express.Router()
 AdminRoute.post('/admin-login',AdminController)
@@ -22,5 +24,8 @@ AdminRoute.post('/admin-certificate-with-token', getCertificate)
 AdminRoute.post('/admin-notification', NotificationController)
 AdminRoute.post('/admin-upload-pdf', UploadPdf)
 AdminRoute.post('/add', addQuestionToTest)
+AdminRoute.post('/playlist-create', createPlaylist);
+AdminRoute.get('/playlist-all', getAllPlaylists);
+AdminRoute.post('/playlist-add', addVideoToPlaylist);
 
 export default AdminRoute;
