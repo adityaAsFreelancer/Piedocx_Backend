@@ -32,6 +32,7 @@ const StudentSigninController = (req, res) => __awaiter(void 0, void 0, void 0, 
         }
     }
     catch (err) {
+        console.log(err);
         return (0, createResponse_1.createResponse)(res, 500, "Internal Server Error!", err, false, true);
     }
 });

@@ -47,6 +47,8 @@ const CertificateController_1 = __importStar(require("../controllers/Certificate
 const NotificationController_1 = __importDefault(require("../controllers/NotificationController"));
 const PdfController_1 = require("../controllers/PdfController");
 const question_controller_1 = require("../controllers/question.controller");
+const PlaylistController_1 = require("../controllers/PlaylistController");
+const VideoController_1 = require("../controllers/VideoController");
 const AdminRoute = express_1.default.Router();
 AdminRoute.post('/admin-login', AdminController_1.AdminController);
 AdminRoute.post('/admin-client', ClientContoller_1.default);
@@ -58,4 +60,7 @@ AdminRoute.post('/admin-certificate-with-token', CertificateController_1.getCert
 AdminRoute.post('/admin-notification', NotificationController_1.default);
 AdminRoute.post('/admin-upload-pdf', PdfController_1.UploadPdf);
 AdminRoute.post('/add', question_controller_1.addQuestionToTest);
+AdminRoute.post('/playlist-create', PlaylistController_1.createPlaylist);
+AdminRoute.get('/playlist-all', PlaylistController_1.getAllPlaylists);
+AdminRoute.post('/playlist-add', VideoController_1.addVideoToPlaylist);
 exports.default = AdminRoute;
