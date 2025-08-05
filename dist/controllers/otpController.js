@@ -1,13 +1,4 @@
 "use strict";
-var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
-    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-};
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
@@ -58,7 +49,7 @@ transporter.verify((error, success) => {
     }
 });
 const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-const sendOTP = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+const sendOTP = async (req, res) => {
     try {
         const { email } = req.body;
         if (!email || !emailRegex.test(email)) {
@@ -68,7 +59,7 @@ const sendOTP = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
             });
         }
         const normalizedEmail = email.trim();
-        const student = yield studentRepo.findOne({ where: { email: normalizedEmail } });
+        const student = await studentRepo.findOne({ where: { email: normalizedEmail } });
         if (!student) {
             return res.status(404).json({
                 success: false,
@@ -79,7 +70,7 @@ const sendOTP = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         const otp = Math.floor(100000 + Math.random() * 900000).toString();
         const expiresAt = Date.now() + 2 * 60 * 1000; // 2 minutes
         // Delete old OTP if any
-        yield otpRepo.delete({ email: normalizedEmail });
+        await otpRepo.delete({ email: normalizedEmail });
         // Save new OTP
         const otpEntity = otpRepo.create({
             email: normalizedEmail,
@@ -87,9 +78,9 @@ const sendOTP = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
             expiresAt,
             attempts: 0,
         });
-        yield otpRepo.save(otpEntity);
+        await otpRepo.save(otpEntity);
         // Send email
-        yield transporter.sendMail({
+        await transporter.sendMail({
             from: `"Piedocx Technologies" <${process.env.EMAIL_USER}>`,
             to: normalizedEmail,
             subject: 'Your OTP Code',
@@ -114,9 +105,9 @@ const sendOTP = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
             message: 'Failed to send OTP. Please try again.',
         });
     }
-});
+};
 exports.sendOTP = sendOTP;
-const verifyOTP = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+const verifyOTP = async (req, res) => {
     try {
         const { email, otp, password } = req.body;
         if (!email || !otp || !password) {
@@ -126,16 +117,16 @@ const verifyOTP = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
             });
         }
         const normalizedEmail = email.trim();
-        const otpRecord = yield otpRepo.findOne({ where: { email: normalizedEmail } });
+        const otpRecord = await otpRepo.findOne({ where: { email: normalizedEmail } });
         if (!otpRecord) {
             return res.status(400).json({ success: false, message: 'OTP not found or expired' });
         }
         if (Date.now() > otpRecord.expiresAt) {
-            yield otpRepo.delete({ email: normalizedEmail });
+            await otpRepo.delete({ email: normalizedEmail });
             return res.status(400).json({ success: false, message: 'OTP has expired' });
         }
         if (otpRecord.attempts >= 3) {
-            yield otpRepo.delete({ email: normalizedEmail });
+            await otpRepo.delete({ email: normalizedEmail });
             return res.status(429).json({
                 success: false,
                 message: 'Too many failed attempts. Please request a new OTP.',
@@ -143,7 +134,7 @@ const verifyOTP = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         }
         if (otpRecord.otp !== otp.toString()) {
             otpRecord.attempts += 1;
-            yield otpRepo.save(otpRecord);
+            await otpRepo.save(otpRecord);
             const remaining = 3 - otpRecord.attempts;
             return res.status(400).json({
                 success: false,
@@ -151,9 +142,9 @@ const verifyOTP = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
             });
         }
         // OTP is correct – update password
-        yield studentRepo.update({ email: normalizedEmail }, { password });
+        await studentRepo.update({ email: normalizedEmail }, { password });
         // Delete OTP record after successful verification
-        yield otpRepo.delete({ email: normalizedEmail });
+        await otpRepo.delete({ email: normalizedEmail });
         return res.status(200).json({ success: true, message: 'OTP verified. Password updated.' });
     }
     catch (error) {
@@ -163,7 +154,7 @@ const verifyOTP = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
             message: 'OTP verification failed.',
         });
     }
-});
+};
 exports.verifyOTP = verifyOTP;
 // Optional: Function to manually clear OTP (for admin use)
 const clearOTP = (req, res) => {

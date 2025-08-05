@@ -32,19 +32,28 @@ var __importStar = (this && this.__importStar) || (function () {
         return result;
     };
 })();
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.AppDataSource = void 0;
 const typeorm_1 = require("typeorm");
 const dotenv = __importStar(require("dotenv"));
+const path_1 = __importDefault(require("path"));
 dotenv.config();
+const isProduction = process.env.NODE_ENV === 'production';
 exports.AppDataSource = new typeorm_1.DataSource({
     type: "postgres",
     url: process.env.DATABASE_URL,
     synchronize: true,
-    ssl: process.env.NODE_ENV === "production"
-        ? { rejectUnauthorized: false }
-        : false,
-    entities: ["src/Entities/**/*.ts"],
-    migrations: ["src/Entities/migration/**/*.ts"],
-    subscribers: ["src/Entities/subscriber/**/*.ts"],
+    ssl: isProduction ? { rejectUnauthorized: false } : false,
+    entities: isProduction
+        ? [path_1.default.join(__dirname, "../Entities/**/*.js")]
+        : [path_1.default.join(__dirname, "../Entities/**/*.ts")],
+    migrations: isProduction
+        ? [path_1.default.join(__dirname, "../Entities/migration/**/*.js")]
+        : [path_1.default.join(__dirname, "../Entities/migration/**/*.ts")],
+    subscribers: isProduction
+        ? [path_1.default.join(__dirname, "../Entities/subscriber/**/*.js")]
+        : [path_1.default.join(__dirname, "../Entities/subscriber/**/*.ts")],
 });

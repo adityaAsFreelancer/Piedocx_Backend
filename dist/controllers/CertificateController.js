@@ -1,18 +1,9 @@
 "use strict";
-var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
-    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.getCertificate = void 0;
 const Certificate_entity_1 = require("../Entities/Certificate.entity");
 const createResponse_1 = require("../Helpers/createResponse");
-const CertificateController = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+const CertificateController = async (req, res) => {
     try {
         const { tokenid, studentname, college, whatsappNumber, email, feedback, course } = req.body;
         if (!tokenid || !studentname || !college || !email || !feedback || !course) {
@@ -27,17 +18,17 @@ const CertificateController = (req, res) => __awaiter(void 0, void 0, void 0, fu
             feedback,
             course,
         });
-        const saved = yield Certificate_entity_1.CertificateTbl.save(cert);
+        const saved = await Certificate_entity_1.CertificateTbl.save(cert);
         return (0, createResponse_1.createResponse)(res, 201, "Certificate added successfully", saved, true, false);
     }
     catch (err) {
         return (0, createResponse_1.createResponse)(res, 500, "Internal Server Error!", err, false, true);
     }
-});
-const getCertificate = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+};
+const getCertificate = async (req, res) => {
     try {
-        const { tokenid, email } = req === null || req === void 0 ? void 0 : req.body;
-        const result = yield Certificate_entity_1.CertificateTbl.findOne({ where: { tokenid, email } });
+        const { tokenid, email } = req?.body;
+        const result = await Certificate_entity_1.CertificateTbl.findOne({ where: { tokenid, email } });
         if (result) {
             return (0, createResponse_1.createResponse)(res, 201, "Certificate Fetched Successfullys", result, true, false);
         }
@@ -47,6 +38,6 @@ const getCertificate = (req, res) => __awaiter(void 0, void 0, void 0, function*
     }
     catch (err) {
     }
-});
+};
 exports.getCertificate = getCertificate;
 exports.default = CertificateController;
