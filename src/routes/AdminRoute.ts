@@ -25,7 +25,7 @@ AdminRoute.post('/admin-notification', NotificationController)
 AdminRoute.post('/admin-upload-pdf', UploadPdf)
 AdminRoute.post('/add', addQuestionToTest)
 AdminRoute.post('/admin-playlist-create', createPlaylist);
-AdminRoute.get('/playlist-all', getAllPlaylists);
-AdminRoute.post('/playlist-add', addVideoToPlaylist);
+AdminRoute.get('/admin-playlist-all', getAllPlaylists);
+AdminRoute.post('/admin-playlist-add', addVideoToPlaylist);
 
 export default AdminRoute;

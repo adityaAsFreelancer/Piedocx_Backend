@@ -18,7 +18,7 @@ export class Video extends BaseEntity {
   title!: string;
 
   @Column()
-  videoUrl!: string;
+  url!: string;
 
   @ManyToOne(() => Playlist, (playlist) => playlist.videos, { onDelete: 'CASCADE' })
   @JoinColumn({ name: 'playlist_id' })

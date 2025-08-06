@@ -27,7 +27,7 @@ __decorate([
 __decorate([
     (0, typeorm_1.Column)(),
     __metadata("design:type", String)
-], Video.prototype, "videoUrl", void 0);
+], Video.prototype, "url", void 0);
 __decorate([
     (0, typeorm_1.ManyToOne)(() => Playlist_entity_1.Playlist, (playlist) => playlist.videos, { onDelete: 'CASCADE' }),
     (0, typeorm_1.JoinColumn)({ name: 'playlist_id' }),

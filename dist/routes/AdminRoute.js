@@ -61,6 +61,6 @@ AdminRoute.post('/admin-notification', NotificationController_1.default);
 AdminRoute.post('/admin-upload-pdf', PdfController_1.UploadPdf);
 AdminRoute.post('/add', question_controller_1.addQuestionToTest);
 AdminRoute.post('/admin-playlist-create', PlaylistController_1.createPlaylist);
-AdminRoute.get('/playlist-all', PlaylistController_1.getAllPlaylists);
-AdminRoute.post('/playlist-add', VideoController_1.addVideoToPlaylist);
+AdminRoute.get('/admin-playlist-all', PlaylistController_1.getAllPlaylists);
+AdminRoute.post('/admin-playlist-add', VideoController_1.addVideoToPlaylist);
 exports.default = AdminRoute;
