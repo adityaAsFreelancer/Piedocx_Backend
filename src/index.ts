@@ -10,7 +10,7 @@ import AdminRoute from './routes/AdminRoute';
 import Testrouter from './routes/test.routes';
 import { scheduleCleanupJobs } from './cron/DeleteOldEntries';
 import Otprouter from './routes/otpRoutes';
-import {authLimiter} from './middleware/LimiterMiddleware'
+// import {authLimiter} from './middleware/LimiterMiddleware'
 dotenv.config();
 const app = express();
 app.use(express.json());
@@ -38,10 +38,10 @@ app.post('/profilepics', async (req: any, res: any) => {
   }
 });
 app.use('/profilepics', express.static(path.join(__dirname, 'profilepics')));
-app.use(authLimiter,Otprouter)
-app.use(authLimiter,StudentRoute);
-app.use("/api",authLimiter,Testrouter)
-app.use(authLimiter,AdminRoute);
+app.use(Otprouter)
+app.use(StudentRoute);
+app.use("/api",Testrouter)
+app.use(AdminRoute);
 AppDataSource.initialize()
   .then(() => {
     console.log('✅ Database connected successfully');

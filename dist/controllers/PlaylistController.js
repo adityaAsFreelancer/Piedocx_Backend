@@ -1,10 +1,10 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.getAllPlaylists = exports.createPlaylist = void 0;
-// src/controllers/PlaylistController.ts
 const Playlist_entity_1 = require("../Entities/Playlist.entity");
 const createPlaylist = async (req, res) => {
     const { title, description, thumbnailUrl, progress, lessons, duration, difficulty, color, secondaryColor, } = req.body;
+    console.log({ title, description, thumbnailUrl });
     try {
         const playlist = Playlist_entity_1.Playlist.create({
             title,

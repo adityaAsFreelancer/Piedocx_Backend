@@ -24,7 +24,7 @@ AdminRoute.post('/admin-certificate-with-token', getCertificate)
 AdminRoute.post('/admin-notification', NotificationController)
 AdminRoute.post('/admin-upload-pdf', UploadPdf)
 AdminRoute.post('/add', addQuestionToTest)
-AdminRoute.post('/playlist-create', createPlaylist);
+AdminRoute.post('/admin-playlist-create', createPlaylist);
 AdminRoute.get('/playlist-all', getAllPlaylists);
 AdminRoute.post('/playlist-add', addVideoToPlaylist);
 

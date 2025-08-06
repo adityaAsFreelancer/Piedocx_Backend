@@ -1,4 +1,3 @@
-// src/controllers/PlaylistController.ts
 import { Playlist } from '../Entities/Playlist.entity';
 
 export const createPlaylist = async (req: any, res: any) => {
@@ -13,6 +12,8 @@ export const createPlaylist = async (req: any, res: any) => {
     color,
     secondaryColor,
   } = req.body;
+  console.log({title,description,thumbnailUrl});
+  
 
   try {
     const playlist = Playlist.create({

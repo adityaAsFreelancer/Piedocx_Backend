@@ -1,4 +1,3 @@
-// src/entities/Playlist.entity.ts
 import {
   Entity,
   PrimaryGeneratedColumn,
@@ -25,19 +24,19 @@ export class Playlist extends BaseEntity {
   @Column({ default: 0 })
   progress!: number;
 
-  @Column()
+  @Column({ default: 0 })
   lessons!: number;
 
-  @Column()
+  @Column({ default: '' })
   duration!: string;
 
-  @Column()
+  @Column({ default: 'Beginner' })
   difficulty!: string;
 
-  @Column()
+  @Column({ default: '#000000' })
   color!: string;
 
-  @Column()
+  @Column({ default: '#FFFFFF' })
   secondaryColor!: string;
 
   @OneToMany(() => Video, (video) => video.playlist)

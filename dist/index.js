@@ -15,7 +15,7 @@ const AdminRoute_1 = __importDefault(require("./routes/AdminRoute"));
 const test_routes_1 = __importDefault(require("./routes/test.routes"));
 const DeleteOldEntries_1 = require("./cron/DeleteOldEntries");
 const otpRoutes_1 = __importDefault(require("./routes/otpRoutes"));
-const LimiterMiddleware_1 = require("./middleware/LimiterMiddleware");
+// import {authLimiter} from './middleware/LimiterMiddleware'
 dotenv_1.default.config();
 const app = (0, express_1.default)();
 app.use(express_1.default.json());
@@ -44,10 +44,10 @@ app.post('/profilepics', async (req, res) => {
     }
 });
 app.use('/profilepics', express_1.default.static(path_1.default.join(__dirname, 'profilepics')));
-app.use(LimiterMiddleware_1.authLimiter, otpRoutes_1.default);
-app.use(LimiterMiddleware_1.authLimiter, StudentRoute_1.default);
-app.use("/api", LimiterMiddleware_1.authLimiter, test_routes_1.default);
-app.use(LimiterMiddleware_1.authLimiter, AdminRoute_1.default);
+app.use(otpRoutes_1.default);
+app.use(StudentRoute_1.default);
+app.use("/api", test_routes_1.default);
+app.use(AdminRoute_1.default);
 dbconfig_1.AppDataSource.initialize()
     .then(() => {
     console.log('✅ Database connected successfully');

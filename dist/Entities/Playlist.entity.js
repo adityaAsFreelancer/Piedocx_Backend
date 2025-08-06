@@ -10,7 +10,6 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Playlist = void 0;
-// src/entities/Playlist.entity.ts
 const typeorm_1 = require("typeorm");
 const Video_entity_1 = require("./Video.entity");
 let Playlist = class Playlist extends typeorm_1.BaseEntity {
@@ -37,23 +36,23 @@ __decorate([
     __metadata("design:type", Number)
 ], Playlist.prototype, "progress", void 0);
 __decorate([
-    (0, typeorm_1.Column)(),
+    (0, typeorm_1.Column)({ default: 0 }),
     __metadata("design:type", Number)
 ], Playlist.prototype, "lessons", void 0);
 __decorate([
-    (0, typeorm_1.Column)(),
+    (0, typeorm_1.Column)({ default: '' }),
     __metadata("design:type", String)
 ], Playlist.prototype, "duration", void 0);
 __decorate([
-    (0, typeorm_1.Column)(),
+    (0, typeorm_1.Column)({ default: 'Beginner' }),
     __metadata("design:type", String)
 ], Playlist.prototype, "difficulty", void 0);
 __decorate([
-    (0, typeorm_1.Column)(),
+    (0, typeorm_1.Column)({ default: '#000000' }),
     __metadata("design:type", String)
 ], Playlist.prototype, "color", void 0);
 __decorate([
-    (0, typeorm_1.Column)(),
+    (0, typeorm_1.Column)({ default: '#FFFFFF' }),
     __metadata("design:type", String)
 ], Playlist.prototype, "secondaryColor", void 0);
 __decorate([

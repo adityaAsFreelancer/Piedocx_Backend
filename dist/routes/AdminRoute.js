@@ -60,7 +60,7 @@ AdminRoute.post('/admin-certificate-with-token', CertificateController_1.getCert
 AdminRoute.post('/admin-notification', NotificationController_1.default);
 AdminRoute.post('/admin-upload-pdf', PdfController_1.UploadPdf);
 AdminRoute.post('/add', question_controller_1.addQuestionToTest);
-AdminRoute.post('/playlist-create', PlaylistController_1.createPlaylist);
+AdminRoute.post('/admin-playlist-create', PlaylistController_1.createPlaylist);
 AdminRoute.get('/playlist-all', PlaylistController_1.getAllPlaylists);
 AdminRoute.post('/playlist-add', VideoController_1.addVideoToPlaylist);
 exports.default = AdminRoute;
