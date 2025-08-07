@@ -3,6 +3,7 @@ import {
   createTest,
   getAllTests,
   submitTest,
+  getAllSubmissionsByEmail,
   getAllSubmissions,
 } from '../controllers/TestController';
 import {
@@ -14,7 +15,8 @@ const Testrouter = express.Router();
 Testrouter.post('/create', createTest);
 Testrouter.get('/all', getAllTests);
 Testrouter.post('/submit', submitTest);
-Testrouter.get('/submissions', getAllSubmissions);
+Testrouter.get('/submissions', getAllSubmissionsByEmail);
+Testrouter.get('/admin-submisson', getAllSubmissions);
 Testrouter.get('/submissions/export/pdf', exportSubmissionsToPDF);
 Testrouter.get('/submissions/export/excel', exportSubmissionsToExcel);
 Testrouter.get('/questions/:testId', getQuestionsByTest);

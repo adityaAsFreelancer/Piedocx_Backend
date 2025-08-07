@@ -48,9 +48,9 @@ export const getAllTests = async (_req: Request, res: Response) => {
 };
 
 // ✅ Submit a test
-export const submitTest = async (req: any, res: any) => {
+export const submitTest = async (req: Request, res: Response) => {
   try {
-    const { userEmail, testId,userName, answers,mobile = [] } = req.body;
+    const { userEmail, testId, answers,mobile = [] } = req.body;
 
     const test = await TestRepo.findOne({
       where: { id: testId },
@@ -100,7 +100,6 @@ export const submitTest = async (req: any, res: any) => {
 
     const submission = Submission.create({
       userEmail,
-      name:userName,
       testId,
       test,
       submitted: true,
@@ -121,8 +120,43 @@ export const submitTest = async (req: any, res: any) => {
     return createResponse(res, 500, 'Submission failed', error, true, false);
   }
 };
+export const getAllSubmissionsByEmail = async (req: Request, res: Response) => {
+  try {
+    const { email, page = 1, limit = 10 } = req.query;
 
+    const take = parseInt(limit as string, 10);
+    const skip = (parseInt(page as string, 10) - 1) * take;
 
+    const queryBuilder = Submission.createQueryBuilder('submission')
+      .leftJoinAndSelect('submission.test', 'test')
+      .skip(skip)
+      .take(take);
+
+    if (email) {
+      queryBuilder.where('submission.userEmail = :email', { email });
+    }
+
+    const [data, total] = await queryBuilder.getManyAndCount();
+
+    return createResponse(
+      res,
+      200,
+      'Submissions fetched',
+      {
+        data,
+        total,
+        page: parseInt(page as string, 10),
+        limit: take,
+        totalPages: Math.ceil(total / take),
+      },
+      false,
+      true
+    );
+  } catch (error) {
+    console.error(error);
+    return createResponse(res, 500, 'Error fetching submissions', error, true, false);
+  }
+};
 export const getAllSubmissions = async (req: Request, res: Response) => {
   try {
     const submissions = await Submission.find({
@@ -131,11 +165,12 @@ export const getAllSubmissions = async (req: Request, res: Response) => {
       },
     });
 
+    // Return plain array directly in 'data'
     return createResponse(
       res,
       200,
       'All submissions fetched successfully',
-      { data: submissions, total: submissions.length },
+      submissions, // ✅ This is the array directly
       false,
       true
     );
@@ -144,4 +179,3 @@ export const getAllSubmissions = async (req: Request, res: Response) => {
     return createResponse(res, 500, 'Error fetching all submissions', error, true, false);
   }
 };
-

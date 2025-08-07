@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getAllSubmissions = exports.submitTest = exports.getAllTests = exports.createTest = void 0;
+exports.getAllSubmissions = exports.getAllSubmissionsByEmail = exports.submitTest = exports.getAllTests = exports.createTest = void 0;
 const Test_entity_1 = require("../Entities/Test.entity");
 const Submission_entity_1 = require("../Entities/Submission.entity");
 const class_validator_1 = require("class-validator");
@@ -42,7 +42,7 @@ exports.getAllTests = getAllTests;
 // ✅ Submit a test
 const submitTest = async (req, res) => {
     try {
-        const { userEmail, testId, userName, answers, mobile = [] } = req.body;
+        const { userEmail, testId, answers, mobile = [] } = req.body;
         const test = await TestRepo.findOne({
             where: { id: testId },
             relations: ['questions'],
@@ -81,7 +81,6 @@ const submitTest = async (req, res) => {
         });
         const submission = Submission_entity_1.Submission.create({
             userEmail,
-            name: userName,
             testId,
             test,
             submitted: true,
@@ -102,6 +101,33 @@ const submitTest = async (req, res) => {
     }
 };
 exports.submitTest = submitTest;
+const getAllSubmissionsByEmail = async (req, res) => {
+    try {
+        const { email, page = 1, limit = 10 } = req.query;
+        const take = parseInt(limit, 10);
+        const skip = (parseInt(page, 10) - 1) * take;
+        const queryBuilder = Submission_entity_1.Submission.createQueryBuilder('submission')
+            .leftJoinAndSelect('submission.test', 'test')
+            .skip(skip)
+            .take(take);
+        if (email) {
+            queryBuilder.where('submission.userEmail = :email', { email });
+        }
+        const [data, total] = await queryBuilder.getManyAndCount();
+        return (0, createResponse_1.createResponse)(res, 200, 'Submissions fetched', {
+            data,
+            total,
+            page: parseInt(page, 10),
+            limit: take,
+            totalPages: Math.ceil(total / take),
+        }, false, true);
+    }
+    catch (error) {
+        console.error(error);
+        return (0, createResponse_1.createResponse)(res, 500, 'Error fetching submissions', error, true, false);
+    }
+};
+exports.getAllSubmissionsByEmail = getAllSubmissionsByEmail;
 const getAllSubmissions = async (req, res) => {
     try {
         const submissions = await Submission_entity_1.Submission.find({
@@ -109,7 +135,9 @@ const getAllSubmissions = async (req, res) => {
                 createdAt: 'DESC',
             },
         });
-        return (0, createResponse_1.createResponse)(res, 200, 'All submissions fetched successfully', { data: submissions, total: submissions.length }, false, true);
+        // Return plain array directly in 'data'
+        return (0, createResponse_1.createResponse)(res, 200, 'All submissions fetched successfully', submissions, // ✅ This is the array directly
+        false, true);
     }
     catch (error) {
         console.error(error);
