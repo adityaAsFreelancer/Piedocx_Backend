@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getQuestionsByTest = exports.addQuestionToTest = void 0;
+exports.deleteQuestion = exports.getQuestionsByTest = exports.addQuestionToTest = void 0;
 const Question_entity_1 = require("../Entities/Question.entity");
 const CreateQuestionDTO_1 = require("../dto/CreateQuestionDTO");
 const class_transformer_1 = require("class-transformer");
@@ -36,3 +36,19 @@ const getQuestionsByTest = async (req, res) => {
     }
 };
 exports.getQuestionsByTest = getQuestionsByTest;
+const deleteQuestion = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const question = await Question_entity_1.Question.findOne({ where: { id } });
+        if (!question) {
+            return res.status(404).json({ message: 'Question not found' });
+        }
+        await Question_entity_1.Question.remove(question);
+        return res.status(200).json({ message: 'Question deleted successfully' });
+    }
+    catch (err) {
+        console.error('Delete error:', err);
+        return res.status(500).json({ message: 'Server error', error: err });
+    }
+};
+exports.deleteQuestion = deleteQuestion;

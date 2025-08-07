@@ -15,4 +15,5 @@ Testrouter.get('/submissions', TestController_1.getAllSubmissions);
 Testrouter.get('/submissions/export/pdf', ExportController_1.exportSubmissionsToPDF);
 Testrouter.get('/submissions/export/excel', ExportController_1.exportSubmissionsToExcel);
 Testrouter.get('/questions/:testId', question_controller_1.getQuestionsByTest);
+Testrouter.delete('/delete/:id', question_controller_1.deleteQuestion);
 exports.default = Testrouter;

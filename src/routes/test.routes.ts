@@ -9,7 +9,7 @@ import {
   exportSubmissionsToExcel,
   exportSubmissionsToPDF,
 } from '../controllers/ExportController';
-import { getQuestionsByTest } from '../controllers/question.controller';
+import { deleteQuestion, getQuestionsByTest } from '../controllers/question.controller';
 const Testrouter = express.Router();
 Testrouter.post('/create', createTest);
 Testrouter.get('/all', getAllTests);
@@ -18,4 +18,6 @@ Testrouter.get('/submissions', getAllSubmissions);
 Testrouter.get('/submissions/export/pdf', exportSubmissionsToPDF);
 Testrouter.get('/submissions/export/excel', exportSubmissionsToExcel);
 Testrouter.get('/questions/:testId', getQuestionsByTest);
+Testrouter.delete('/delete/:id', deleteQuestion);
+
 export default Testrouter;

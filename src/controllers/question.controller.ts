@@ -33,4 +33,21 @@ export const getQuestionsByTest = async (req: any, res: any) => {
     return res.status(500).json({ message: 'Server error', error: err });
   }
 };
+export const deleteQuestion = async (req: any, res: any) => {
+  try {
+    const { id } = req.params;
+
+    const question = await Question.findOne({ where: { id } });
+    if (!question) {
+      return res.status(404).json({ message: 'Question not found' });
+    }
+
+    await Question.remove(question);
+
+    return res.status(200).json({ message: 'Question deleted successfully' });
+  } catch (err) {
+    console.error('Delete error:', err);
+    return res.status(500).json({ message: 'Server error', error: err });
+  }
+};
 
