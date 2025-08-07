@@ -101,31 +101,19 @@ const submitTest = async (req, res) => {
     }
 };
 exports.submitTest = submitTest;
-// ✅ Get all submissions with pagination
 const getAllSubmissions = async (req, res) => {
     try {
-        const { email, page = 1, limit = 10 } = req.query;
-        const take = parseInt(limit, 10);
-        const skip = (parseInt(page, 10) - 1) * take;
-        const queryBuilder = Submission_entity_1.Submission.createQueryBuilder('submission')
-            .leftJoinAndSelect('submission.test', 'test')
-            .skip(skip)
-            .take(take);
-        if (email) {
-            queryBuilder.where('submission.userEmail = :email', { email });
-        }
-        const [data, total] = await queryBuilder.getManyAndCount();
-        return (0, createResponse_1.createResponse)(res, 200, 'Submissions fetched', {
-            data,
-            total,
-            page: parseInt(page, 10),
-            limit: take,
-            totalPages: Math.ceil(total / take),
-        }, false, true);
+        const submissions = await Submission_entity_1.Submission.find({
+            relations: ['test'], // Join with test data
+            order: {
+                createdAt: 'DESC', // Optional: newest first
+            },
+        });
+        return (0, createResponse_1.createResponse)(res, 200, 'All submissions fetched successfully', { data: submissions, total: submissions.length }, false, true);
     }
     catch (error) {
         console.error(error);
-        return (0, createResponse_1.createResponse)(res, 500, 'Error fetching submissions', error, true, false);
+        return (0, createResponse_1.createResponse)(res, 500, 'Error fetching all submissions', error, true, false);
     }
 };
 exports.getAllSubmissions = getAllSubmissions;
