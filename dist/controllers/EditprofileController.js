@@ -8,6 +8,7 @@ const StudentSignup_entity_1 = require("../Entities/StudentSignup.entity");
 const createResponse_1 = require("../Helpers/createResponse");
 const UploadFilehelper_1 = require("../Helpers/UploadFilehelper");
 const path_1 = __importDefault(require("path"));
+const fs_1 = __importDefault(require("fs"));
 const studentRepo = dbconfig_1.AppDataSource.getRepository(StudentSignup_entity_1.StudentSignup);
 const EditProfileController = async (req, res) => {
     try {
@@ -19,7 +20,6 @@ const EditProfileController = async (req, res) => {
         if (!student) {
             return res.status(404).json((0, createResponse_1.createResponse)(res, 404, 'Student not found', [], false, true));
         }
-        // ✅ Only update profile photo if file is passed
         if (req.files?.photo) {
             const photo = req.files.photo;
             const allowedTypes = ['image/jpeg', 'image/png', 'image/jpg'];
@@ -27,6 +27,9 @@ const EditProfileController = async (req, res) => {
                 return res.status(400).json((0, createResponse_1.createResponse)(res, 400, 'Only JPG, JPEG, PNG formats are allowed', [], false, true));
             }
             const uploadPath = path_1.default.join(__dirname, '../profilepics/');
+            if (!fs_1.default.existsSync(uploadPath)) {
+                fs_1.default.mkdirSync(uploadPath, { recursive: true });
+            }
             const uploadedPhotoName = await (0, UploadFilehelper_1.uploadFileHelper)(photo, uploadPath, res);
             student.profile = uploadedPhotoName;
         }

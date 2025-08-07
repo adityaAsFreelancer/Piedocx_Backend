@@ -1,13 +1,23 @@
 "use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.uploadFileHelper = void 0;
-const createResponse_1 = require("./createResponse");
-const uploadFileHelper = async (file, path, res) => {
-    await file?.mv(path + file?.name, (err) => {
-        if (err) {
-            return (0, createResponse_1.createResponse)(res, 500, "Error during file upload", [], false, true);
-        }
+const path_1 = __importDefault(require("path"));
+const uploadFileHelper = (file, uploadPath, res) => {
+    return new Promise((resolve, reject) => {
+        const filename = Date.now() + '-' + file.name;
+        const fullPath = path_1.default.join(uploadPath, filename);
+        file.mv(fullPath, (err) => {
+            if (err) {
+                console.error('Upload failed:', err);
+                reject(err);
+            }
+            else {
+                resolve(filename);
+            }
+        });
     });
-    return file?.name;
 };
 exports.uploadFileHelper = uploadFileHelper;

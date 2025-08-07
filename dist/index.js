@@ -21,28 +21,6 @@ const app = (0, express_1.default)();
 app.use(express_1.default.json());
 app.use((0, cors_1.default)());
 app.use((0, express_fileupload_1.default)());
-app.post('/profilepics', async (req, res) => {
-    try {
-        if (!req.files || !req.files.photo) {
-            return res.status(400).json({ success: false, message: 'No file uploaded' });
-        }
-        const file = req.files.photo;
-        const filename = Date.now() + '-' + file.name;
-        const uploadPath = path_1.default.join(__dirname, 'profilepics', filename);
-        file.mv(uploadPath, (err) => {
-            if (err) {
-                console.error('File upload error:', err);
-                return res.status(500).json({ success: false, message: 'File upload failed' });
-            }
-            const imageUrl = `http://localhost:${process.env.PORT || 4000}profilepics/${filename}`;
-            return res.json({ success: true, photo: filename, imageUrl });
-        });
-    }
-    catch (error) {
-        console.error('Upload error:', error);
-        return res.status(500).json({ success: false, message: 'Something went wrong' });
-    }
-});
 app.use('/profilepics', express_1.default.static(path_1.default.join(__dirname, 'profilepics')));
 app.use(otpRoutes_1.default);
 app.use(StudentRoute_1.default);
