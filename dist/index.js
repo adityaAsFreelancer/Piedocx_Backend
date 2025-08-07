@@ -15,7 +15,6 @@ const AdminRoute_1 = __importDefault(require("./routes/AdminRoute"));
 const test_routes_1 = __importDefault(require("./routes/test.routes"));
 const DeleteOldEntries_1 = require("./cron/DeleteOldEntries");
 const otpRoutes_1 = __importDefault(require("./routes/otpRoutes"));
-// import {authLimiter} from './middleware/LimiterMiddleware'
 dotenv_1.default.config();
 const app = (0, express_1.default)();
 app.use(express_1.default.json());
@@ -34,7 +33,7 @@ dbconfig_1.AppDataSource.initialize()
     console.log('❌ DB Error:', err);
 });
 (0, DeleteOldEntries_1.scheduleCleanupJobs)();
-const PORT = process.env.PORT || 4000;
+const PORT = process.env.PORT || 7000;
 app.listen(PORT, () => {
     console.log(`🚀 Server is running on port ${PORT}`);
 });

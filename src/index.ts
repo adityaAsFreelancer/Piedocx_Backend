@@ -10,7 +10,6 @@ import AdminRoute from './routes/AdminRoute';
 import Testrouter from './routes/test.routes';
 import { scheduleCleanupJobs } from './cron/DeleteOldEntries';
 import Otprouter from './routes/otpRoutes';
-// import {authLimiter} from './middleware/LimiterMiddleware'
 dotenv.config();
 const app = express();
 app.use(express.json());
@@ -29,7 +28,7 @@ AppDataSource.initialize()
     console.log('❌ DB Error:', err);
   });
   scheduleCleanupJobs(); 
-const PORT = process.env.PORT || 4000;
+const PORT = process.env.PORT || 7000;
 app.listen(PORT, () => {
   console.log(`🚀 Server is running on port ${PORT}`);
 });
