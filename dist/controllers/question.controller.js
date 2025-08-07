@@ -5,7 +5,6 @@ const Question_entity_1 = require("../Entities/Question.entity");
 const CreateQuestionDTO_1 = require("../dto/CreateQuestionDTO");
 const class_transformer_1 = require("class-transformer");
 const class_validator_1 = require("class-validator");
-const Test_entity_1 = require("../Entities/Test.entity");
 const addQuestionToTest = async (req, res) => {
     const dto = (0, class_transformer_1.plainToInstance)(CreateQuestionDTO_1.CreateQuestionDTO, req.body);
     const errors = await (0, class_validator_1.validate)(dto);
@@ -24,13 +23,12 @@ exports.addQuestionToTest = addQuestionToTest;
 const getQuestionsByTest = async (req, res) => {
     try {
         const { testId } = req.params;
-        const test = await Test_entity_1.Test.findOne({
-            where: { id: testId },
-            relations: ['questions'],
+        const result = await Question_entity_1.Question.find({
+            where: { test_id: testId }
         });
-        if (!test)
+        if (!result)
             return res.status(404).json({ message: 'Test not found' });
-        return res.status(200).json({ questions: test.questions });
+        return res.status(200).json({ questions: result });
     }
     catch (err) {
         console.error('Fetch error:', err);

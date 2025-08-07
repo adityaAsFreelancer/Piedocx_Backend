@@ -21,14 +21,13 @@ export const addQuestionToTest = async (req: any, res: any) => {
 export const getQuestionsByTest = async (req: any, res: any) => {
   try {
     const { testId } = req.params;
-    const test = await Test.findOne({
-      where: { id: testId },
-      relations: ['questions'],
+    const result = await Question.find({
+      where: { test_id: testId }
     });
 
-    if (!test) return res.status(404).json({ message: 'Test not found' });
+    if (!result) return res.status(404).json({ message: 'Test not found' });
 
-    return res.status(200).json({ questions: test.questions });
+    return res.status(200).json({ questions: result});
   } catch (err) {
     console.error('Fetch error:', err);
     return res.status(500).json({ message: 'Server error', error: err });
