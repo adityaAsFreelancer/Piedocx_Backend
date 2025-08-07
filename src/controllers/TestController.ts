@@ -27,7 +27,7 @@ export const createTest = async (req: Request, res: Response) => {
     }
 
     const { title, questions, marks, time } = dto;
-    const test = TestRepo.create({ title, questions, marks, time });
+    const test = TestRepo.create({ title, question:questions, marks, time });
     await TestRepo.save(test);
 
     return createResponse(res, 201, 'Test created successfully', test, false, true);

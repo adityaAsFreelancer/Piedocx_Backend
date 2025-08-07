@@ -18,7 +18,7 @@ const createTest = async (req, res) => {
             return (0, createResponse_1.createResponse)(res, 400, 'Validation failed', errors.map((err) => err.constraints), true, false);
         }
         const { title, questions, marks, time } = dto;
-        const test = TestRepo.create({ title, questions, marks, time });
+        const test = TestRepo.create({ title, question: questions, marks, time });
         await TestRepo.save(test);
         return (0, createResponse_1.createResponse)(res, 201, 'Test created successfully', test, false, true);
     }

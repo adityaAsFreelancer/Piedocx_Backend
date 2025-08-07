@@ -21,6 +21,9 @@ export class Test extends BaseEntity {
   questions!: Question[];
 
   @Column({ name: 'marks', type: 'int', nullable: true })
+  question!: number;
+
+  @Column({ name: 'marks', type: 'int', nullable: true })
   marks!: number;
 
   @Column({ name: 'time', type: 'int', nullable: true })

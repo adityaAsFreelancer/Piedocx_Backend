@@ -30,6 +30,10 @@ __decorate([
 __decorate([
     (0, typeorm_1.Column)({ name: 'marks', type: 'int', nullable: true }),
     __metadata("design:type", Number)
+], Test.prototype, "question", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ name: 'marks', type: 'int', nullable: true }),
+    __metadata("design:type", Number)
 ], Test.prototype, "marks", void 0);
 __decorate([
     (0, typeorm_1.Column)({ name: 'time', type: 'int', nullable: true }),
