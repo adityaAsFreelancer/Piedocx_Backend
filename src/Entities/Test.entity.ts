@@ -20,7 +20,7 @@ export class Test extends BaseEntity {
   @OneToMany(() => Question, (question) => question.test, { cascade: ['remove'] })
   questions!: Question[];
 
-  @Column({ name: 'marks', type: 'int', nullable: true })
+  @Column({ name: 'question', type: 'int', nullable: true })
   question!: number;
 
   @Column({ name: 'marks', type: 'int', nullable: true })
