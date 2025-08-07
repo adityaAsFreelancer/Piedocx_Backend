@@ -13,7 +13,6 @@ const dbconfig_1 = require("./dbconfig/dbconfig");
 const StudentRoute_1 = __importDefault(require("./routes/StudentRoute"));
 const AdminRoute_1 = __importDefault(require("./routes/AdminRoute"));
 const test_routes_1 = __importDefault(require("./routes/test.routes"));
-const DeleteOldEntries_1 = require("./cron/DeleteOldEntries");
 const otpRoutes_1 = __importDefault(require("./routes/otpRoutes"));
 dotenv_1.default.config();
 const app = (0, express_1.default)();
@@ -32,7 +31,6 @@ dbconfig_1.AppDataSource.initialize()
     .catch((err) => {
     console.log('❌ DB Error:', err);
 });
-(0, DeleteOldEntries_1.scheduleCleanupJobs)();
 const PORT = process.env.PORT || 7000;
 app.listen(PORT, () => {
     console.log(`🚀 Server is running on port ${PORT}`);

@@ -8,7 +8,6 @@ import { AppDataSource } from './dbconfig/dbconfig';
 import StudentRoute from './routes/StudentRoute';
 import AdminRoute from './routes/AdminRoute';
 import Testrouter from './routes/test.routes';
-import { scheduleCleanupJobs } from './cron/DeleteOldEntries';
 import Otprouter from './routes/otpRoutes';
 dotenv.config();
 const app = express();
@@ -27,7 +26,6 @@ AppDataSource.initialize()
   .catch((err: any) => {
     console.log('❌ DB Error:', err);
   });
-  scheduleCleanupJobs(); 
 const PORT = process.env.PORT || 7000;
 app.listen(PORT, () => {
   console.log(`🚀 Server is running on port ${PORT}`);
