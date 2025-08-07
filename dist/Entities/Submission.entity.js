@@ -25,6 +25,10 @@ __decorate([
     __metadata("design:type", String)
 ], Submission.prototype, "userEmail", void 0);
 __decorate([
+    (0, typeorm_1.Column)({ name: 'name', nullable: true }),
+    __metadata("design:type", String)
+], Submission.prototype, "name", void 0);
+__decorate([
     (0, typeorm_1.Column)({ name: "mobile", type: "varchar", nullable: true }),
     __metadata("design:type", String)
 ], Submission.prototype, "mobile", void 0);

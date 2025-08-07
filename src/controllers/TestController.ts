@@ -48,9 +48,9 @@ export const getAllTests = async (_req: Request, res: Response) => {
 };
 
 // ✅ Submit a test
-export const submitTest = async (req: Request, res: Response) => {
+export const submitTest = async (req: any, res: any) => {
   try {
-    const { userEmail, testId, answers,mobile = [] } = req.body;
+    const { userEmail, testId,userName, answers,mobile = [] } = req.body;
 
     const test = await TestRepo.findOne({
       where: { id: testId },
@@ -100,6 +100,7 @@ export const submitTest = async (req: Request, res: Response) => {
 
     const submission = Submission.create({
       userEmail,
+      name:userName,
       testId,
       test,
       submitted: true,
@@ -125,9 +126,8 @@ export const submitTest = async (req: Request, res: Response) => {
 export const getAllSubmissions = async (req: Request, res: Response) => {
   try {
     const submissions = await Submission.find({
-      relations: ['test'], // Join with test data
       order: {
-        createdAt: 'DESC', // Optional: newest first
+        createdAt: 'DESC',
       },
     });
 
