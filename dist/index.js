@@ -24,6 +24,7 @@ app.use(otpRoutes_1.default);
 app.use(StudentRoute_1.default);
 app.use("/api", test_routes_1.default);
 app.use(AdminRoute_1.default);
+app.use('/uploads', express_1.default.static(path_1.default.join(__dirname, '/uploads')));
 dbconfig_1.AppDataSource.initialize()
     .then(() => {
     console.log('✅ Database connected successfully');

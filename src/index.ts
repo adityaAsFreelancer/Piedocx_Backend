@@ -19,6 +19,8 @@ app.use(Otprouter)
 app.use(StudentRoute);
 app.use("/api",Testrouter)
 app.use(AdminRoute);
+app.use('/uploads', express.static(path.join(__dirname, '/uploads')));
+
 AppDataSource.initialize()
   .then(() => {
     console.log('✅ Database connected successfully');

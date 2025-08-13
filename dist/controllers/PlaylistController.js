@@ -1,11 +1,20 @@
 "use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.getAllPlaylists = exports.createPlaylist = void 0;
 const Playlist_entity_1 = require("../Entities/Playlist.entity");
+const path_1 = __importDefault(require("path"));
+const UploadFilehelper_1 = require("../Helpers/UploadFilehelper"); // adjust path
 const createPlaylist = async (req, res) => {
-    const { title, description, thumbnailUrl, progress, lessons, duration, difficulty, color, secondaryColor, } = req.body;
-    console.log({ title, description, thumbnailUrl });
     try {
+        const { title, description, progress, lessons, duration, difficulty, color, secondaryColor, } = req.body;
+        let thumbnailUrl = '';
+        if (req.files && req.files.thumbnail) {
+            const fileName = await (0, UploadFilehelper_1.uploadFileHelper)(req.files.thumbnail, path_1.default.join(__dirname, '../../uploads/playlists'), res);
+            thumbnailUrl = `/uploads/playlists/${fileName}`;
+        }
         const playlist = Playlist_entity_1.Playlist.create({
             title,
             description,
@@ -18,9 +27,13 @@ const createPlaylist = async (req, res) => {
             secondaryColor,
         });
         await playlist.save();
-        return res.status(201).json(playlist);
+        return res.status(201).json({
+            message: 'Playlist created successfully',
+            playlist,
+        });
     }
     catch (err) {
+        console.error(err);
         return res.status(500).json({ message: 'Failed to create playlist', error: err });
     }
 };
