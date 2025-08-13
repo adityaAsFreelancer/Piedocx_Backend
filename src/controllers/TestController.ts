@@ -50,7 +50,7 @@ export const getAllTests = async (_req: Request, res: Response) => {
 // ✅ Submit a test
 export const submitTest = async (req: Request, res: Response) => {
   try {
-    const { userEmail, testId, answers,mobile = [] } = req.body;
+    const { userEmail,userName, testId, answers,mobile = [] } = req.body;
 
     const test = await TestRepo.findOne({
       where: { id: testId },
@@ -104,6 +104,7 @@ export const submitTest = async (req: Request, res: Response) => {
       test,
       submitted: true,
       score,
+      name:userName,
       answers: answerDetails,
       correct: correctAnswers,
       incorrect: incorrectAnswers,
