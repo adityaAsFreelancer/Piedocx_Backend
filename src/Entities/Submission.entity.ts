@@ -19,7 +19,9 @@ export class Submission extends BaseEntity {
 
   @Column({ name: 'useremail', type: 'varchar', nullable: true })
   userEmail!: string;
-  @Column({ name:'name',nullable: true })
+  @Column({ name: 'testName', nullable: true })
+  testName!: string;
+  @Column({ name: 'name', nullable: true })
   name!: string;
 
   @Column({ name: "mobile", type: "varchar", nullable: true })
