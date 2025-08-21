@@ -41,19 +41,28 @@ const typeorm_1 = require("typeorm");
 const dotenv = __importStar(require("dotenv"));
 const path_1 = __importDefault(require("path"));
 dotenv.config();
-const isProduction = process.env.NODE_ENV === 'production';
+const isProduction = process.env.NODE_ENV === "production";
 exports.AppDataSource = new typeorm_1.DataSource({
     type: "postgres",
-    url: process.env.DATABASE_URL,
-    synchronize: true,
-    ssl: isProduction ? { rejectUnauthorized: false } : false,
-    entities: isProduction
-        ? [path_1.default.join(__dirname, "../Entities/**/*.js")]
-        : [path_1.default.join(__dirname, "../Entities/**/*.ts")],
-    migrations: isProduction
-        ? [path_1.default.join(__dirname, "../Entities/migration/**/*.js")]
-        : [path_1.default.join(__dirname, "../Entities/migration/**/*.ts")],
-    subscribers: isProduction
-        ? [path_1.default.join(__dirname, "../Entities/subscriber/**/*.js")]
-        : [path_1.default.join(__dirname, "../Entities/subscriber/**/*.ts")],
+    url: process.env.DATABASE_URL, // Neon DB URL from .env
+    synchronize: true, // ❌ production me false karna better hai
+    logging: true,
+    ssl: {
+        rejectUnauthorized: false, // Neon requires SSL
+    },
+    entities: [
+        isProduction
+            ? path_1.default.join(__dirname, "../Entities/**/*.js")
+            : path_1.default.join(__dirname, "../Entities/**/*.ts"),
+    ],
+    migrations: [
+        isProduction
+            ? path_1.default.join(__dirname, "../migrations/**/*.js")
+            : path_1.default.join(__dirname, "../migrations/**/*.ts"),
+    ],
+    subscribers: [
+        isProduction
+            ? path_1.default.join(__dirname, "../subscribers/**/*.js")
+            : path_1.default.join(__dirname, "../subscribers/**/*.ts"),
+    ],
 });

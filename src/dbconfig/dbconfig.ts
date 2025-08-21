@@ -4,24 +4,33 @@ import path from "path";
 
 dotenv.config();
 
-const isProduction = process.env.NODE_ENV === 'production';
+const isProduction = process.env.NODE_ENV === "production";
 
 export const AppDataSource = new DataSource({
   type: "postgres",
-  url: process.env.DATABASE_URL,
-  synchronize: true,
+  url: process.env.DATABASE_URL, // Neon DB URL from .env
+  synchronize: true, // ❌ production me false karna better hai
+  logging: true,
 
-  ssl: isProduction ? { rejectUnauthorized: false } : false,
+  ssl: {
+    rejectUnauthorized: false, // Neon requires SSL
+  },
 
-  entities: isProduction
-    ? [path.join(__dirname, "../Entities/**/*.js")]
-    : [path.join(__dirname, "../Entities/**/*.ts")],
+  entities: [
+    isProduction
+      ? path.join(__dirname, "../Entities/**/*.js")
+      : path.join(__dirname, "../Entities/**/*.ts"),
+  ],
 
-  migrations: isProduction
-    ? [path.join(__dirname, "../Entities/migration/**/*.js")]
-    : [path.join(__dirname, "../Entities/migration/**/*.ts")],
+  migrations: [
+    isProduction
+      ? path.join(__dirname, "../migrations/**/*.js")
+      : path.join(__dirname, "../migrations/**/*.ts"),
+  ],
 
-  subscribers: isProduction
-    ? [path.join(__dirname, "../Entities/subscriber/**/*.js")]
-    : [path.join(__dirname, "../Entities/subscriber/**/*.ts")],
+  subscribers: [
+    isProduction
+      ? path.join(__dirname, "../subscribers/**/*.js")
+      : path.join(__dirname, "../subscribers/**/*.ts"),
+  ],
 });
