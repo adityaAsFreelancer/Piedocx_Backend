@@ -24,7 +24,6 @@ export const createPlaylist = async (req: any, res: any) => {
       );
       thumbnailUrl = `/uploads/playlists/${fileName}`;
     }
-
     const playlist = Playlist.create({
       title,
       description,
