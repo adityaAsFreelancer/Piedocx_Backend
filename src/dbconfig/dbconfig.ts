@@ -15,7 +15,7 @@ export const AppDataSource = new DataSource({
   migrations: [__dirname + "/migrations/*.{ts,js}"],
   subscribers: [],
   ssl: isProduction
-    ? { rejectUnauthorized: false } // for Neon / Render
+    ? { rejectUnauthorized: true } // for Neon / Render
     : false,
   extra: isProduction
     ? {
