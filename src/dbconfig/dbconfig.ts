@@ -8,12 +8,14 @@ const isProduction = process.env.NODE_ENV === "production";
 
 export const AppDataSource = new DataSource({
   type: "postgres",
-  url: process.env.DATABASE_URL, // Neon DB URL from .env
-  synchronize: true, // ❌ production me false karna better hai
+  url: process.env.DATABASE_URL,
+  synchronize: true, // ❌ Set false in production
   logging: true,
 
-  ssl: {
-    rejectUnauthorized: false, // Neon requires SSL
+  extra: {
+    ssl: {
+      rejectUnauthorized: false, // ✅ Neon requires SSL
+    },
   },
 
   entities: [
