@@ -4,10 +4,11 @@
   "main": "dist/index.js",
   "scripts": {
     "build": "tsc",
-    "start": "node dist/index.js",
+    "start": "cross-env NODE_ENV=production node dist/index.js",
     "dev": "ts-node-dev --respawn --transpile-only src/index.ts",
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "stage": "tsc && git status && git add ."
+    "migration:run": "ts-node ./node_modules/typeorm/cli.js migration:run -d src/config/data-source.ts",
+    "migration:generate": "ts-node ./node_modules/typeorm/cli.js migration:generate -d src/config/data-source.ts src/migrations/AutoMigration",
+    "stage": "npm run build && git add . && git status"
   },
   "keywords": [],
   "author": "",
@@ -41,6 +42,7 @@
     "@types/node": "^24.3.0",
     "@types/nodemailer": "^6.4.17",
     "@types/pdfkit": "^0.14.0",
+    "cross-env": "^10.0.0",
     "ts-node": "^10.9.2",
     "ts-node-dev": "^2.0.0",
     "typeorm": "^0.3.26",
