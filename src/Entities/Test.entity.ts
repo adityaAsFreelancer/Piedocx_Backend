@@ -29,6 +29,9 @@ export class Test extends BaseEntity {
   @Column({ name: 'time', type: 'int', nullable: true })
   time!: number;
 
+  @Column({ name: 'isActive', type: 'boolean', default: false })
+  isActive!: boolean;
+
   @CreateDateColumn({ name: 'createdAt', type: 'timestamptz' })
   createdAt!: Date;
 
