@@ -14,8 +14,8 @@ exports.AppDataSource = new typeorm_1.DataSource({
     url: process.env.DATABASE_URL,
     synchronize: false,
     logging: !isProduction,
-    entities: ["../Entities/*.{ts,js}"],
-    migrations: ["../migrations/*.{ts,js}"],
+    entities: [__dirname + '/../Entities/*.{ts,js}'],
+    migrations: [__dirname + '/../migrations/*.{ts,js}'],
     subscribers: [],
     ssl: isProduction
         ? { rejectUnauthorized: true }
