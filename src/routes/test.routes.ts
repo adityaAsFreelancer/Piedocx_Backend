@@ -5,6 +5,8 @@ import {
   submitTest,
   getAllSubmissionsByEmail,
   getAllSubmissions,
+  toggleTestActive,
+  getActiveTests,
 } from '../controllers/TestController';
 import {
   exportSubmissionsToExcel,
@@ -13,6 +15,8 @@ import {
 import { deleteQuestion, getQuestionsByTest } from '../controllers/question.controller';
 const Testrouter = express.Router();
 Testrouter.post('/create', createTest);
+Testrouter.patch('/:id/toggle', toggleTestActive);
+Testrouter.get('/active', getActiveTests);
 Testrouter.get('/all', getAllTests);
 Testrouter.post('/submit', submitTest);
 Testrouter.get('/submissions', getAllSubmissionsByEmail);

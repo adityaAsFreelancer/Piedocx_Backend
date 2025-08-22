@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getAllSubmissions = exports.getAllSubmissionsByEmail = exports.submitTest = exports.getAllTests = exports.createTest = void 0;
+exports.getActiveTests = exports.toggleTestActive = exports.getAllSubmissions = exports.getAllSubmissionsByEmail = exports.submitTest = exports.getAllTests = exports.createTest = void 0;
 const Test_entity_1 = require("../Entities/Test.entity");
 const Submission_entity_1 = require("../Entities/Submission.entity");
 const class_validator_1 = require("class-validator");
@@ -9,7 +9,6 @@ const CreateTest_dto_1 = require("../dto/CreateTest.dto");
 const createResponse_1 = require("../Helpers/createResponse");
 const dbconfig_1 = require("../dbconfig/dbconfig");
 const TestRepo = dbconfig_1.AppDataSource.getRepository(Test_entity_1.Test);
-// ✅ Create a new test
 const createTest = async (req, res) => {
     try {
         const dto = (0, class_transformer_1.plainToInstance)(CreateTest_dto_1.CreateTestDTO, req.body);
@@ -28,7 +27,6 @@ const createTest = async (req, res) => {
     }
 };
 exports.createTest = createTest;
-// ✅ Get all tests
 const getAllTests = async (_req, res) => {
     try {
         const tests = await TestRepo.find();
@@ -147,3 +145,33 @@ const getAllSubmissions = async (req, res) => {
     }
 };
 exports.getAllSubmissions = getAllSubmissions;
+const toggleTestActive = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const test = await TestRepo.findOne({ where: { id } });
+        if (!test)
+            return (0, createResponse_1.createResponse)(res, 404, 'Test not found', [], true, false);
+        test.isActive = !test.isActive; // toggle active status
+        await TestRepo.save(test);
+        return (0, createResponse_1.createResponse)(res, 200, `Test is now ${test.isActive ? 'Active' : 'Inactive'}`, test, false, true);
+    }
+    catch (error) {
+        console.error(error);
+        return (0, createResponse_1.createResponse)(res, 500, 'Error toggling test', error, true, false);
+    }
+};
+exports.toggleTestActive = toggleTestActive;
+const getActiveTests = async (_req, res) => {
+    try {
+        const activeTests = await TestRepo.find({
+            where: { isActive: true },
+            relations: ['questions'],
+            order: { createdAt: 'DESC' },
+        });
+        return (0, createResponse_1.createResponse)(res, 200, 'Active tests fetched', activeTests, false, true);
+    }
+    catch (error) {
+        return (0, createResponse_1.createResponse)(res, 500, 'Error fetching active tests', error, true, false);
+    }
+};
+exports.getActiveTests = getActiveTests;
