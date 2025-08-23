@@ -40,10 +40,6 @@ __decorate([
     __metadata("design:type", Number)
 ], Test.prototype, "time", void 0);
 __decorate([
-    (0, typeorm_1.Column)({ name: 'isActive', type: 'boolean', default: false }),
-    __metadata("design:type", Boolean)
-], Test.prototype, "isActive", void 0);
-__decorate([
     (0, typeorm_1.CreateDateColumn)({ name: 'createdAt', type: 'timestamptz' }),
     __metadata("design:type", Date)
 ], Test.prototype, "createdAt", void 0);

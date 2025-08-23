@@ -9,8 +9,6 @@ const ExportController_1 = require("../controllers/ExportController");
 const question_controller_1 = require("../controllers/question.controller");
 const Testrouter = express_1.default.Router();
 Testrouter.post('/create', TestController_1.createTest);
-Testrouter.patch('/:id/toggle', TestController_1.toggleTestActive);
-Testrouter.get('/active', TestController_1.getActiveTests);
 Testrouter.get('/all', TestController_1.getAllTests);
 Testrouter.post('/submit', TestController_1.submitTest);
 Testrouter.get('/submissions', TestController_1.getAllSubmissionsByEmail);

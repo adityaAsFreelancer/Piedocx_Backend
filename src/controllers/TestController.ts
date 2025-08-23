@@ -8,6 +8,8 @@ import { createResponse } from '../Helpers/createResponse';
 import { AppDataSource } from '../dbconfig/dbconfig';
 
 const TestRepo = AppDataSource.getRepository(Test);
+
+// ✅ Create a new test
 export const createTest = async (req: Request, res: Response) => {
   try {
     const dto :any= plainToInstance(CreateTestDTO, req.body);
@@ -34,6 +36,8 @@ export const createTest = async (req: Request, res: Response) => {
     return createResponse(res, 500, 'Error creating test', error, true, false);
   }
 };
+
+// ✅ Get all tests
 export const getAllTests = async (_req: Request, res: Response) => {
   try {
     const tests = await TestRepo.find();
@@ -177,41 +181,3 @@ export const getAllSubmissions = async (req: Request, res: Response) => {
     return createResponse(res, 500, 'Error fetching all submissions', error, true, false);
   }
 };
-
-export const toggleTestActive = async (req: Request, res: Response) => {
-  try {
-    const { id } = req.params;
-
-    const test = await TestRepo.findOne({ where: { id } });
-    if (!test) return createResponse(res, 404, 'Test not found', [], true, false);
-
-    test.isActive = !test.isActive; // toggle active status
-    await TestRepo.save(test);
-
-    return createResponse(
-      res,
-      200,
-      `Test is now ${test.isActive ? 'Active' : 'Inactive'}`,
-      test,
-      false,
-      true
-    );
-  } catch (error) {
-    console.error(error);
-    return createResponse(res, 500, 'Error toggling test', error, true, false);
-  }
-};
-
-export const getActiveTests = async (_req: Request, res: Response) => {
-  try {
-    const activeTests = await TestRepo.find({
-      where: { isActive: true },
-      relations: ['questions'],
-      order: { createdAt: 'DESC' },
-    });
-
-    return createResponse(res, 200, 'Active tests fetched', activeTests, false, true);
-  } catch (error) {
-    return createResponse(res, 500, 'Error fetching active tests', error, true, false);
-  }
-}
